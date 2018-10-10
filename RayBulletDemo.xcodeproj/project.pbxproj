@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04845A44216E362100705C99 /* fire.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04845A43216E362100705C99 /* fire.sks */; };
+		04845A46216E401200705C99 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04845A45216E401100705C99 /* CGFloat+Extensions.swift */; };
+		04845A48216E49EA00705C99 /* RayBullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04845A47216E49EA00705C99 /* RayBullet.swift */; };
+		04845A4A216E4A1E00705C99 /* PathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04845A49216E4A1E00705C99 /* PathGenerator.swift */; };
+		04845A4C216E513600705C99 /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04845A4B216E513600705C99 /* Hero.swift */; };
 		8C9664EB216DE8EB0057E4E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9664EA216DE8EB0057E4E0 /* AppDelegate.swift */; };
 		8C9664ED216DE8EB0057E4E0 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8C9664EC216DE8EB0057E4E0 /* GameScene.sks */; };
 		8C9664EF216DE8EB0057E4E0 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8C9664EE216DE8EB0057E4E0 /* Actions.sks */; };
@@ -30,6 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04845A43216E362100705C99 /* fire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fire.sks; sourceTree = "<group>"; };
+		04845A45216E401100705C99 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		04845A47216E49EA00705C99 /* RayBullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayBullet.swift; sourceTree = "<group>"; };
+		04845A49216E4A1E00705C99 /* PathGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathGenerator.swift; sourceTree = "<group>"; };
+		04845A4B216E513600705C99 /* Hero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		8C9664E7216DE8EB0057E4E0 /* RayBulletDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RayBulletDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C9664EA216DE8EB0057E4E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C9664EC216DE8EB0057E4E0 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -85,6 +95,7 @@
 		8C9664E9216DE8EB0057E4E0 /* RayBulletDemo */ = {
 			isa = PBXGroup;
 			children = (
+				04845A45216E401100705C99 /* CGFloat+Extensions.swift */,
 				8C9664EA216DE8EB0057E4E0 /* AppDelegate.swift */,
 				8C9664EC216DE8EB0057E4E0 /* GameScene.sks */,
 				8C9664EE216DE8EB0057E4E0 /* Actions.sks */,
@@ -95,6 +106,10 @@
 				8C9664F9216DE8ED0057E4E0 /* LaunchScreen.storyboard */,
 				8C9664FC216DE8ED0057E4E0 /* Info.plist */,
 				8C966510216DF2DC0057E4E0 /* rayBullet.fsh */,
+				04845A43216E362100705C99 /* fire.sks */,
+				04845A47216E49EA00705C99 /* RayBullet.swift */,
+				04845A49216E4A1E00705C99 /* PathGenerator.swift */,
+				04845A4B216E513600705C99 /* Hero.swift */,
 			);
 			path = RayBulletDemo;
 			sourceTree = "<group>";
@@ -192,6 +207,7 @@
 				8C9664F6216DE8EB0057E4E0 /* Main.storyboard in Resources */,
 				8C9664ED216DE8EB0057E4E0 /* GameScene.sks in Resources */,
 				8C966511216DF2DC0057E4E0 /* rayBullet.fsh in Resources */,
+				04845A44216E362100705C99 /* fire.sks in Resources */,
 				8C9664F8216DE8ED0057E4E0 /* Assets.xcassets in Resources */,
 				8C9664FB216DE8ED0057E4E0 /* LaunchScreen.storyboard in Resources */,
 				8C9664EF216DE8EB0057E4E0 /* Actions.sks in Resources */,
@@ -212,8 +228,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04845A48216E49EA00705C99 /* RayBullet.swift in Sources */,
 				8C9664F1216DE8EB0057E4E0 /* GameScene.swift in Sources */,
 				8C9664F3216DE8EB0057E4E0 /* GameViewController.swift in Sources */,
+				04845A46216E401200705C99 /* CGFloat+Extensions.swift in Sources */,
+				04845A4C216E513600705C99 /* Hero.swift in Sources */,
+				04845A4A216E4A1E00705C99 /* PathGenerator.swift in Sources */,
 				8C9664EB216DE8EB0057E4E0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

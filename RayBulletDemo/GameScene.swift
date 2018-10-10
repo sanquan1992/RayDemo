@@ -9,12 +9,12 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, UICollisionBehaviorDelegate {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
-    private var hero: SKSpriteNode?
+    private var hero: Hero?
     private var enemy: SKSpriteNode?
     
     
@@ -33,7 +33,7 @@ class GameScene: SKScene {
 //            label.run(SKAction.fadeIn(withDuration: 2.0))
 //        }
 //
-        hero = self.childNode(withName: "//Hero") as? SKSpriteNode
+        hero = self.childNode(withName: "//Hero") as? Hero
         enemy = self.childNode(withName: "//Enemy") as? SKSpriteNode
         
         if let hero = hero, let enemy = enemy {
@@ -55,35 +55,10 @@ class GameScene: SKScene {
                                               SKAction.fadeOut(withDuration: 0.5),
                                               SKAction.removeFromParent()]))
         }
-        
-        hero?.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run {
-            self.hitEnemy()
-        }]) ))
+        guard let hero = hero, let enemy = enemy  else { return }
+        print("ddd start to \(enemy.position)")
+        hero.fire(type: .fireRay(time: 1.0, count: 6), targetNodes: [enemy])
     
-    }
-    
-    func hitEnemy() {
-        guard let hero = hero, let enemy = enemy else { return }
-        let toPoint = CGPoint.init(x: enemy.position.x - hero.position.x, y: enemy.position.y - hero.position.y)
-        let amount:CGFloat = enemy.position.y > 0 ? 40 : -40
-        let controlPoint = CGPoint.init(x: toPoint.x / 2.0, y: enemy.position.y + amount)
-        let path = UIBezierPath()
-        path.lineWidth = 40.0
-        path.lineCapStyle = .round
-        path.lineJoinStyle = .round
-        path.move(to: .zero)
-        path.addQuadCurve(to: toPoint, controlPoint: controlPoint)
-        path.stroke()
-        let shapeNode = SKShapeNode.init(path: path.cgPath)
-        shapeNode.strokeColor = SKColor.red
-        shapeNode.position = hero.position
-        shapeNode.lineWidth = 20
-        addEffect(to: shapeNode)
-        addChild(shapeNode)
-        shapeNode.run(SKAction.wait(forDuration: 2.0)) {
-            shapeNode.strokeShader = nil
-            shapeNode.removeFromParent()
-        }
     }
     
     func addEffect(to bullet:SKShapeNode) {
@@ -102,7 +77,7 @@ class GameScene: SKScene {
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        guard let hero = hero, let enemy = enemy else { return }
+        guard let enemy = enemy else { return }
         enemy.position = pos
     }
     
@@ -153,4 +128,9 @@ class GameScene: SKScene {
         
         self.lastUpdateTime = currentTime
     }
+    
+    func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item1: UIDynamicItem, with item2: UIDynamicItem, at p: CGPoint) {
+        
+    }
+    
 }
