@@ -17,7 +17,7 @@ class GameViewController: UIViewController {
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
-        let scene = GameScene(size:UIScreen.main.bounds.size)
+        let scene = GameScene(size:CGSize.init(width: 2688, height: 1242))
         let skView = self.view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true

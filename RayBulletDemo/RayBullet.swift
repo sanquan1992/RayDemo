@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-protocol Attacked where Self:SKNode {
+protocol Attacked  {
     //When self was attacked, will happen something
     func attacked()
 }
@@ -66,29 +66,30 @@ protocol AllowCollision {
 extension AllowCollision where Self:SKNode {
     
     func checkCollision<T>(_ target: T) where T : Attacked {
-        if frame.intersects(target.frame) {
-            target.attacked()
-            if let `self` = self as? Attacked {
-                self.attacked()
-            }
-        }
+//        if frame.intersects(target.frame) {
+//            target.attacked()
+//            if let `self` = self as? Attacked {
+//                self.attacked()
+//            }
+//        }
     }
 }
 
-class RayBullet: SKNode, AllowCollision, EdgeCheck, AllowPhysic {
+class RayBullet: SKSpriteNode, AllowCollision, EdgeCheck, AllowPhysic {
     
     func configPhysic() {
         
-        let bedBodySize = CGSize(width: 5, height: 5)
-        physicsBody = SKPhysicsBody(rectangleOf: bedBodySize)
-        physicsBody!.categoryBitMask = PhysicsCategory.friend.rawValue
+        physicsBody = SKPhysicsBody(rectangleOf: frame.size)
+        physicsBody!.categoryBitMask = PhysicsCategory.heroBullet.rawValue
+        physicsBody!.collisionBitMask = 0
         physicsBody!.contactTestBitMask = PhysicsCategory.enemyBulletAttackable.rawValue |
                                         PhysicsCategory.enemy.rawValue |
                                         PhysicsCategory.block.rawValue |
                                         PhysicsCategory.blockAttackable.rawValue
         //自己的子弹可以与敌人可被阻挡子弹、敌人、石头、可以被击碎的石头发生碰撞
         //不受外力影响
-        physicsBody!.isDynamic = false
+        physicsBody!.isDynamic = true
+        physicsBody!.affectedByGravity = false
     }
     
     var targetNode: SKNode!
@@ -103,17 +104,9 @@ class RayBullet: SKNode, AllowCollision, EdgeCheck, AllowPhysic {
     }
     var explosionType: ExplosionType = .diffusion(time: 0.5)
     
-    
-    required init(targetNode:SKNode, speed:CGFloat = 200, sksFile: String?) {
-        self.targetNode = targetNode
-        self.raySpeed = speed
-        if sksFile == nil {
-            emitter = SKEmitterNode.init(fileNamed: "fire.sks")
-        }else {
-            emitter = SKEmitterNode.init(fileNamed: sksFile!)
-            //config
-        }
-        super.init()
+    override init(texture: SKTexture?, color: UIColor, size: CGSize) {
+        emitter = SKEmitterNode.init(fileNamed: "fire.sks")
+        super.init(texture: texture, color: color, size: size)
         self.configPhysic()
     }
     
@@ -128,7 +121,9 @@ class RayBullet: SKNode, AllowCollision, EdgeCheck, AllowPhysic {
         position = atPos
         targetNode.addChild(self)
         emitter.targetNode = targetNode
-        run(SKAction.follow(path, speed: 600.0))
+        run(SKAction.follow(path, speed: 1200)) {
+            self.removeFromParent()
+        }
     }
     
     deinit {
@@ -141,6 +136,7 @@ extension RayBullet: Attacked {
     
     func attacked() {
         //remove from scene
+        removeAllChildren()
         removeAllActions()
         removeFromParent()
     }

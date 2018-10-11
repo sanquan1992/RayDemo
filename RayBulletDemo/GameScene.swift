@@ -15,12 +15,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var graphs = [String : GKGraph]()
     
     private var hero: Hero
-    private var enemy: Enemy
-    
     
     private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
     
     let playableRect:CGRect
     
@@ -32,9 +28,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playableRect = CGRect(x: playableMargin, y: 0,
                               width: playableWidth,
                               height: size.height)
-        hero = Hero(color: .red, size: CGSize.init(width: 40, height: 40))
-        enemy = Enemy(color: .green, size: CGSize.init(width: 40, height: 40))
-        
+        let texture = SKTexture.init(imageNamed: "gun")
+        hero = Hero(texture: texture, size: texture.size())
+        hero.setScale(0.4)
+        hero.position = CGPoint.init(x: playableRect.origin.x + 400, y: playableRect.origin.y + 200)
         super.init(size: size)
         physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
     }
@@ -49,22 +46,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    override func didMove(to view: SKView) {
-        
-        physicsWorld.contactDelegate = self
-        
-        hero.position = CGPoint.init(x: 20, y: 20)
-        enemy.position = CGPoint.init(x: 500, y: 200)
-        addChild(hero)
-        addChild(enemy)
-        hero.configPhysic()
+    func spawnEnemy() {
+        let enemy = Enemy(color: .green, size: CGSize.init(width: 40, height: 40))
         enemy.configPhysic()
-        
-        hero.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-        enemy.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-        
-        
-        hero.fire(type: .fireRay(time: 1.0, count: 1), targetNodes: [enemy])
+        enemy.position = CGPoint.init(x: playableRect.origin.x  + 2000, y: playableRect.origin.y + 600)
+        addChild(enemy)
+        hero.fire(type: .fireRay(time: 2.0, count: 6), targetNodes: [enemy])
+    }
+    
+    override func didMove(to view: SKView) {
+    
+        physicsWorld.contactDelegate = self
+        addChild(hero)
+        hero.configPhysic()
+        spawnEnemy()
     }
     
     func addEffect(to bullet:SKShapeNode) {
@@ -83,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        enemy.position = pos
+        hero.position = pos
     }
     
     func touchUp(atPoint pos : CGPoint) {
@@ -139,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //TODO: 问题一， 如何子弹的Collision -> ON， 那么自己的子弹之间的碰撞也会产生物理效果，
     //      需要解决， 可能只能使用Frame的intersets来解决
     func didBegin(_ contact: SKPhysicsContact) {
-        print("aaaaa , collision happen ")
+        
         if let nodeA = contact.bodyA.node as? Attacked {
             nodeA.attacked()
         }
@@ -148,6 +143,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
+
     
 }
+
 

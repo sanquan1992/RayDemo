@@ -27,3 +27,13 @@ struct PhysicsCategory: OptionSet {
     static let blockAttackable = PhysicsCategory(rawValue: 1 << 7)
     static let edge = PhysicsCategory(rawValue: 1 << 8)
 }
+
+struct PhysicsCate {
+
+    static let None:  UInt32 = 0
+    static let Cat:   UInt32 = 0b1 // 1
+    static let Block: UInt32 = 0b10 // 2
+    static let Bed:   UInt32 = 0b100 // 4
+    static let Edge:  UInt32 = 0b1000 // 8
+    static let Label: UInt32 = 0b10000 // 16
+}

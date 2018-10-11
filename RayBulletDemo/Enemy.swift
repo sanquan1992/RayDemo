@@ -12,11 +12,15 @@ import SpriteKit
 class Enemy: SKSpriteNode, AllowCollision, AllowPhysic {
     
     func configPhysic() {
+
         physicsBody = SKPhysicsBody(rectangleOf: frame.size)
         physicsBody!.categoryBitMask = PhysicsCategory.enemy.rawValue
+        physicsBody!.collisionBitMask = 0
+        physicsBody!.contactTestBitMask = PhysicsCategory.heroBullet.rawValue
         //自己的子弹可以与敌人可被阻挡子弹、敌人、石头、可以被击碎的石头发生碰撞
         //不受外力影响
-        physicsBody!.isDynamic = false
+        physicsBody!.isDynamic = true
+        physicsBody!.affectedByGravity = false
     }
     
     var heart : Int = 5
@@ -64,7 +68,7 @@ class Enemy: SKSpriteNode, AllowCollision, AllowPhysic {
             let overlay = perH * CGFloat(i)
             let controlPoint = CGPoint.init(x: position.x + CGFloat.random(min: -200, max: randomTarget.position.x), y: overlay + CGFloat.random(min: 0, max: overlay) - screenH / 2.0)
             let path = PathGenerator.randomQuadCurve(position, randomTarget.position, ctlP: controlPoint)
-            let ray = RayBullet.init(targetNode: self, sksFile: nil)
+            let ray = RayBullet.init(texture: nil, color: .blue, size: CGSize.init(width: 10, height: 10))
             ray.actionWithPath(path: path, targetNode: self.parent, atPos: position)
         }
     }
@@ -86,6 +90,6 @@ extension Enemy: Attacked {
     
     func attacked() {
         removeAllActions()
-        removeFromParent()
+//        removeFromParent()
     }
 }
