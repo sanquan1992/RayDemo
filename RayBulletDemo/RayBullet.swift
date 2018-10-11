@@ -9,18 +9,87 @@
 import Foundation
 import SpriteKit
 
+protocol Attacked where Self:SKNode {
+    //When self was attacked, will happen something
+    func attacked()
+}
+
+enum SpriteType {
+    case Friend // be attacked
+    case Enemy  // be attacked
+    case Bullet(friendly:Bool) // be attacked
+    case Block  // barrier, but can be attacked
+    case Transparency  // can not be attacked, just background component
+    
+    func name() -> String {
+        switch self {
+        case .Friend:
+            return "friend"
+        case .Enemy:
+            return "enemy"
+        case .Block:
+            return "block"
+        case .Transparency:
+            return "transparency"
+        case .Bullet(let friendly):
+            if friendly {
+                return "friendBullet"
+            }
+            return "enemyBullet"
+        }
+    }
+}
+
+protocol EdgeCheck {
+    //...
+}
+
+extension EdgeCheck where Self:SKSpriteNode {
+    
+    func checkEdgeCollision() {
+        let maxWidth = UIScreen.main.bounds.size.width / 2.0
+        let maxHeight = UIScreen.main.bounds.size.height / 2.0
+        if abs(position.x) > maxWidth || abs(position.y) > maxHeight {
+            if let `self` = self as? Attacked {
+                self.attacked()
+            }
+        }
+    }
+}
+
+/// Protocol for frame interaction check
+//  No need node has physic body
 protocol AllowCollision {
     //...
 }
 
 extension AllowCollision where Self:SKNode {
     
-    func collisionHappen(_ uTime: TimeInterval) {
-        //TODO: add union code for boundary check
+    func checkCollision<T>(_ target: T) where T : Attacked {
+        if frame.intersects(target.frame) {
+            target.attacked()
+            if let `self` = self as? Attacked {
+                self.attacked()
+            }
+        }
     }
 }
 
-class RayBullet: SKNode, AllowCollision {
+class RayBullet: SKNode, AllowCollision, EdgeCheck, AllowPhysic {
+    
+    func configPhysic() {
+        
+        let bedBodySize = CGSize(width: 5, height: 5)
+        physicsBody = SKPhysicsBody(rectangleOf: bedBodySize)
+        physicsBody!.categoryBitMask = PhysicsCategory.friend.rawValue
+        physicsBody!.contactTestBitMask = PhysicsCategory.enemyBulletAttackable.rawValue |
+                                        PhysicsCategory.enemy.rawValue |
+                                        PhysicsCategory.block.rawValue |
+                                        PhysicsCategory.blockAttackable.rawValue
+        //自己的子弹可以与敌人可被阻挡子弹、敌人、石头、可以被击碎的石头发生碰撞
+        //不受外力影响
+        physicsBody!.isDynamic = false
+    }
     
     var targetNode: SKNode!
     var raySpeed: CGFloat = 200
@@ -45,6 +114,7 @@ class RayBullet: SKNode, AllowCollision {
             //config
         }
         super.init()
+        self.configPhysic()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,17 +124,36 @@ class RayBullet: SKNode, AllowCollision {
     func actionWithPath(path:CGPath, targetNode: SKNode?, atPos:CGPoint) {
         
         guard let targetNode = targetNode else { return }
-        let buNode = SKNode()
-        buNode.position = atPos
-        targetNode.addChild(buNode)
-        buNode.addChild(emitter)
+        addChild(emitter)
+        position = atPos
+        targetNode.addChild(self)
         emitter.targetNode = targetNode
-        buNode.run(SKAction.sequence([SKAction.follow(path, speed: 600.0), SKAction.wait(forDuration: 1.5), SKAction.run {
-            buNode.removeFromParent()
-            }]))
+        run(SKAction.follow(path, speed: 600.0))
     }
     
     deinit {
         print("bullet disappear")
+    }
+    
+}
+
+extension RayBullet: Attacked {
+    
+    func attacked() {
+        //remove from scene
+        removeAllActions()
+        removeFromParent()
+    }
+}
+/// Protocol for physic body collision check
+// Need node has physic body
+protocol AllowPhysicCollision {
+    
+}
+
+extension AllowPhysicCollision where Self:SKSpriteNode {
+    
+    private func physicCollisionHappen() {
+        //TODO: add union code for physic collision check
     }
 }

@@ -14,7 +14,7 @@ class PathGenerator: NSObject {
     static func randomQuadCurve(_ fromLoc:CGPoint, _ toLoc:CGPoint, ctlP:CGPoint) -> CGPath {
         let path = UIBezierPath()
         path.move(to: .zero)
-        path.addQuadCurve(to: toLoc, controlPoint: ctlP)
+        path.addQuadCurve(to: toLoc-fromLoc, controlPoint: ctlP)
         return path.cgPath
     }
 }

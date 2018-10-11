@@ -9,56 +9,62 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, UICollisionBehaviorDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
-    private var hero: Hero?
-    private var enemy: SKSpriteNode?
+    private var hero: Hero
+    private var enemy: Enemy
     
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
+    let playableRect:CGRect
+    
+    override init(size: CGSize) {
+        //IphoneX之后的手机都不是16:9的屏幕，更长， 不考虑4:3的屏幕
+        let maxAspectRatio:CGFloat = 16.0 / 9.0
+        let playableWidth = size.height * maxAspectRatio
+        let playableMargin = (size.width-playableWidth)/2.0
+        playableRect = CGRect(x: playableMargin, y: 0,
+                              width: playableWidth,
+                              height: size.height)
+        hero = Hero(color: .red, size: CGSize.init(width: 40, height: 40))
+        enemy = Enemy(color: .green, size: CGSize.init(width: 40, height: 40))
+        
+        super.init(size: size)
+        physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func sceneDidLoad() {
-
+        
         self.lastUpdateTime = 0
         
-        // Get label node from scene and store it for use later
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
-//
-        hero = self.childNode(withName: "//Hero") as? Hero
-        enemy = self.childNode(withName: "//Enemy") as? SKSpriteNode
-        
-        if let hero = hero, let enemy = enemy {
-            hero.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            enemy.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-        }
-        
-        
-        
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-        guard let hero = hero, let enemy = enemy  else { return }
-        print("ddd start to \(enemy.position)")
-        hero.fire(type: .fireRay(time: 1.0, count: 6), targetNodes: [enemy])
+    }
     
+    override func didMove(to view: SKView) {
+        
+        physicsWorld.contactDelegate = self
+        
+        hero.position = CGPoint.init(x: 20, y: 20)
+        enemy.position = CGPoint.init(x: 500, y: 200)
+        addChild(hero)
+        addChild(enemy)
+        hero.configPhysic()
+        enemy.configPhysic()
+        
+        hero.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
+        enemy.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
+        
+        
+        hero.fire(type: .fireRay(time: 1.0, count: 1), targetNodes: [enemy])
     }
     
     func addEffect(to bullet:SKShapeNode) {
@@ -77,7 +83,6 @@ class GameScene: SKScene, UICollisionBehaviorDelegate {
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        guard let enemy = enemy else { return }
         enemy.position = pos
     }
     
@@ -128,9 +133,21 @@ class GameScene: SKScene, UICollisionBehaviorDelegate {
         
         self.lastUpdateTime = currentTime
     }
+
     
-    func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item1: UIDynamicItem, with item2: UIDynamicItem, at p: CGPoint) {
+    //碰撞发生
+    //TODO: 问题一， 如何子弹的Collision -> ON， 那么自己的子弹之间的碰撞也会产生物理效果，
+    //      需要解决， 可能只能使用Frame的intersets来解决
+    func didBegin(_ contact: SKPhysicsContact) {
+        print("aaaaa , collision happen ")
+        if let nodeA = contact.bodyA.node as? Attacked {
+            nodeA.attacked()
+        }
+        if let nodeB = contact.bodyB.node as? Attacked {
+            nodeB.attacked()
+        }
         
     }
     
 }
+

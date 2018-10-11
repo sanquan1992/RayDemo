@@ -1,59 +1,53 @@
 //
-//  Hero.swift
+//  Enemy.swift
 //  RayBulletDemo
 //
-//  Created by mac on 2018/10/10.
-//  Copyright © 2018年 cn17181. All rights reserved.
+//  Created by cn17181 on 2018/10/11.
+//  Copyright © 2018 cn17181. All rights reserved.
 //
 
 import Foundation
 import SpriteKit
 
-protocol AllowPhysic{
-    func configPhysic()
-}
-
-class Hero: SKSpriteNode, AllowCollision, AllowPhysic {
+class Enemy: SKSpriteNode, AllowCollision, AllowPhysic {
     
     func configPhysic() {
-        
+        physicsBody = SKPhysicsBody(rectangleOf: frame.size)
+        physicsBody!.categoryBitMask = PhysicsCategory.enemy.rawValue
+        //自己的子弹可以与敌人可被阻挡子弹、敌人、石头、可以被击碎的石头发生碰撞
+        //不受外力影响
+        physicsBody!.isDynamic = false
     }
     
     var heart : Int = 5
-    var physicCategory: PhysicsCategory {
-        return [.friend]
-    }
     
     enum FireType {
         //Fire ray repeast with duration time
         case fire(time: TimeInterval)
         case fireRay(time: TimeInterval, count: Int)
         case fireMissle(time: TimeInterval)
-        case fireUniqueSkill
     }
     
-//    required init(nodeFile: String, loc:CGPoint = .zero, heart:Int = 5) {
-//        super.init(texture: nil, color: .red, size: CGSize.zero)
-//    }
+//        required init(nodeFile: String, loc:CGPoint = .zero, heart:Int = 5) {
+//            super.init(texture: nil, color: .red, size: CGSize.zero)
+//        }
 //
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+//        required init?(coder aDecoder: NSCoder) {
+//            fatalError("init(coder:) has not been implemented")
+//        }
     
     func fire(type: FireType, targetNodes:[SKNode]) {
         switch type {
         case .fire(let time):
             run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run {
                 self.fire(time, targetNodes: targetNodes)
-            }]) ))
+                }]) ))
         case .fireRay(let time, let count):
             run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run {
                 self.fireRay(time, targetNodes: targetNodes, count: count)
                 }]) ))
         case .fireMissle(let time):
             fireMissle(time, targetNodes: targetNodes)
-        case .fireUniqueSkill:
-            fireUniqueSkill(targetNodes: targetNodes)
         }
     }
     
@@ -84,9 +78,14 @@ class Hero: SKSpriteNode, AllowCollision, AllowPhysic {
     }
     
     deinit {
-        print("Hero was killed")
+        print("Enemy was killed")
     }
 }
 
-
-
+extension Enemy: Attacked {
+    
+    func attacked() {
+        removeAllActions()
+        removeFromParent()
+    }
+}
