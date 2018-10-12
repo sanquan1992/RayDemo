@@ -38,6 +38,11 @@
 		8CDDE024216F2AEF0037CA7D /* SpriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDE023216F2AEF0037CA7D /* SpriteManager.swift */; };
 		8CDDE026216F306E0037CA7D /* PhysicsDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDE025216F306E0037CA7D /* PhysicsDefine.swift */; };
 		8CDDE02C216F3F6D0037CA7D /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDE02B216F3F6D0037CA7D /* Enemy.swift */; };
+		8CDDE0342170666A0037CA7D /* Foreground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CDDE0322170666A0037CA7D /* Foreground.png */; };
+		8CDDE0352170666A0037CA7D /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CDDE0332170666A0037CA7D /* Background.png */; };
+		8CDDE0392170788E0037CA7D /* LevelUIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDE0382170788E0037CA7D /* LevelUIManager.swift */; };
+		8CDDE03D2170A49F0037CA7D /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDE03C2170A49F0037CA7D /* CGSize+Extensions.swift */; };
+		8CDDE03F2170A9DD0037CA7D /* spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CDDE03E2170A9DD0037CA7D /* spaceship.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +91,11 @@
 		8CDDE023216F2AEF0037CA7D /* SpriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteManager.swift; sourceTree = "<group>"; };
 		8CDDE025216F306E0037CA7D /* PhysicsDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsDefine.swift; sourceTree = "<group>"; };
 		8CDDE02B216F3F6D0037CA7D /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		8CDDE0322170666A0037CA7D /* Foreground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foreground.png; sourceTree = "<group>"; };
+		8CDDE0332170666A0037CA7D /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
+		8CDDE0382170788E0037CA7D /* LevelUIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUIManager.swift; sourceTree = "<group>"; };
+		8CDDE03C2170A49F0037CA7D /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
+		8CDDE03E2170A9DD0037CA7D /* spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +137,8 @@
 		8C9664E9216DE8EB0057E4E0 /* RayBulletDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8CDDE03E2170A9DD0037CA7D /* spaceship.png */,
+				8CDDE02D217066450037CA7D /* Source */,
 				04845A4F216FB19E00705C99 /* ray.png */,
 				04845A4D216FAE6000705C99 /* gun.png */,
 				8CDDE00A216EE53A0037CA7D /* SKTUtils */,
@@ -147,6 +159,7 @@
 				8CDDE023216F2AEF0037CA7D /* SpriteManager.swift */,
 				8CDDE025216F306E0037CA7D /* PhysicsDefine.swift */,
 				8CDDE02B216F3F6D0037CA7D /* Enemy.swift */,
+				8CDDE0382170788E0037CA7D /* LevelUIManager.swift */,
 			);
 			path = RayBulletDemo;
 			sourceTree = "<group>";
@@ -175,8 +188,18 @@
 				8CDDE014216EE53A0037CA7D /* SKTAudio.swift */,
 				8CDDE015216EE53A0037CA7D /* Vector3.swift */,
 				8CDDE016216EE53A0037CA7D /* CGFloat+Extensions.swift */,
+				8CDDE03C2170A49F0037CA7D /* CGSize+Extensions.swift */,
 			);
 			path = SKTUtils;
+			sourceTree = "<group>";
+		};
+		8CDDE02D217066450037CA7D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				8CDDE0332170666A0037CA7D /* Background.png */,
+				8CDDE0322170666A0037CA7D /* Foreground.png */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,12 +283,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CDDE03F2170A9DD0037CA7D /* spaceship.png in Resources */,
 				8C9664F6216DE8EB0057E4E0 /* Main.storyboard in Resources */,
+				8CDDE0352170666A0037CA7D /* Background.png in Resources */,
 				8C9664ED216DE8EB0057E4E0 /* GameScene.sks in Resources */,
 				8C966511216DF2DC0057E4E0 /* rayBullet.fsh in Resources */,
 				04845A44216E362100705C99 /* fire.sks in Resources */,
 				04845A4E216FAE6000705C99 /* gun.png in Resources */,
 				8C9664F8216DE8ED0057E4E0 /* Assets.xcassets in Resources */,
+				8CDDE0342170666A0037CA7D /* Foreground.png in Resources */,
 				04845A50216FB19E00705C99 /* ray.png in Resources */,
 				8C9664FB216DE8ED0057E4E0 /* LaunchScreen.storyboard in Resources */,
 				8C9664EF216DE8EB0057E4E0 /* Actions.sks in Resources */,
@@ -291,6 +317,7 @@
 				8C9664F1216DE8EB0057E4E0 /* GameScene.swift in Sources */,
 				8CDDE01A216EE53A0037CA7D /* SKTTimingFunctions.swift in Sources */,
 				8CDDE026216F306E0037CA7D /* PhysicsDefine.swift in Sources */,
+				8CDDE03D2170A49F0037CA7D /* CGSize+Extensions.swift in Sources */,
 				8CDDE01B216EE53A0037CA7D /* SKAction+Extensions.swift in Sources */,
 				8CDDE022216EE53A0037CA7D /* CGFloat+Extensions.swift in Sources */,
 				8CDDE024216F2AEF0037CA7D /* SpriteManager.swift in Sources */,
@@ -300,6 +327,7 @@
 				8CDDE017216EE53A0037CA7D /* SKColor+Extensions.swift in Sources */,
 				8CDDE01D216EE53A0037CA7D /* SKNode+Extensions.swift in Sources */,
 				8CDDE01C216EE53A0037CA7D /* SKAction+SpecialEffects.swift in Sources */,
+				8CDDE0392170788E0037CA7D /* LevelUIManager.swift in Sources */,
 				8CDDE02C216F3F6D0037CA7D /* Enemy.swift in Sources */,
 				04845A4C216E513600705C99 /* Hero.swift in Sources */,
 				04845A4A216E4A1E00705C99 /* PathGenerator.swift in Sources */,
@@ -469,7 +497,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DMNU982WTD;
 				INFOPLIST_FILE = RayBulletDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -486,7 +516,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DMNU982WTD;
 				INFOPLIST_FILE = RayBulletDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

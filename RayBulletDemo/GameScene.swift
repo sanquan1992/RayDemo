@@ -28,8 +28,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playableRect = CGRect(x: playableMargin, y: 0,
                               width: playableWidth,
                               height: size.height)
-        let texture = SKTexture.init(imageNamed: "gun")
-        hero = Hero(texture: texture, size: texture.size())
+        let texture = SKTexture.init(imageNamed: "spaceship")
+        hero = Hero(texture: texture, size: texture.size() * 8.0)
         hero.setScale(0.4)
         hero.position = CGPoint.init(x: playableRect.origin.x + 400, y: playableRect.origin.y + 200)
         super.init(size: size)
@@ -55,11 +55,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
-    
+        backgroundColor = .white
         physicsWorld.contactDelegate = self
         addChild(hero)
         hero.configPhysic()
         spawnEnemy()
+        LevelUIManager.ready(.Normallevel(level: .City), on: self, playableAera: playableRect)
     }
     
     func addEffect(to bullet:SKShapeNode) {
@@ -127,6 +128,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         self.lastUpdateTime = currentTime
+        
+        // Run parallax background
+        LevelUIManager.run(dt: dt)
     }
 
     

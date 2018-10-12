@@ -151,5 +151,6 @@ extension AllowPhysicCollision where Self:SKSpriteNode {
     
     private func physicCollisionHappen() {
         //TODO: add union code for physic collision check
+        
     }
 }
